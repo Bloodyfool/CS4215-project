@@ -15,5 +15,5 @@ ID=str(args.id)
 
 # os.system("sudo apt install psmisc")
 
-os.system("nohup ./log.sh "+NAME+"_"+ID+" 1>/dev/null 2>/dev/null &")
-time.sleep(1)
+os.system("nohup vmstat -t 5 > "+NAME+"_"+ID+".log &")
+time.sleep(3)

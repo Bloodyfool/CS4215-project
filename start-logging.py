@@ -2,6 +2,7 @@
 
 import argparse
 import os
+import time
 
 parser = argparse.ArgumentParser(description="Flip a switch by setting a flag")
 parser.add_argument('-n', '--name', action='store', help='ip of master', required=True, type=str)
@@ -13,6 +14,7 @@ NAME=args.name
 def run(command):
     print(command)
     os.system(command)
+    time.sleep(1)
 
 def run_over_ssh(ip, command):
     print("ssh -t " + ip + " " + command)

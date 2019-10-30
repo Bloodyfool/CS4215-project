@@ -1,6 +1,6 @@
 #!/bin/bash
 
 while true; do
-	uptime >> $1.log;
-	sleep 60;
+	echo $(date +%s) $(uptime) >> $1.log;
+	sleep 5;
 done

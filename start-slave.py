@@ -3,6 +3,7 @@
 import argparse
 import re
 import os
+import time
 
 def regex_type(s, pat=re.compile(r"[a-f0-9A-F]{32}")):
     if not pat.match(s):
@@ -15,6 +16,7 @@ def ip_address(s):
 def run(command):
     # print(command)
     os.system(command)
+    time.sleep(1)
 
 parser = argparse.ArgumentParser(description="Flip a switch by setting a flag")
 parser.add_argument('-m', '--master', action='store', help='ip of master', required=True, type=ip_address)
@@ -34,5 +36,14 @@ run("rm -r /opt/spark/work/*")
 run("/opt/spark/sbin/start-slave.sh spark://"+MASTER+":7077 -m "+MEMORY+"G")
 
 if(CPU != "0"):
-    run("cpulimit -l "+CPU+" dd if=/dev/zero of=/dev/null &")
+    # run("nohup cpulimit -l "+CPU+" dd if=/dev/zero of=/dev/null &")
+    if CPU == "50":
+        run("nohup dd if=/dev/zero of=/dev/null &")
+    if CPU == "75":
+        run("nohup dd if=/dev/zero of=/dev/null &")
+        run("nohup dd if=/dev/zero of=/dev/null &")
+        run("nohup dd if=/dev/zero of=/dev/null &")
+    # time.sleep(1)
+    run("sudo renice -9 -p $(pidof dd)")
+    time.sleep(1)
 

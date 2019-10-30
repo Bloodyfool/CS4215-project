@@ -3,6 +3,7 @@
 import argparse
 import re
 import os
+import time
 
 def regex_type(s, pat=re.compile(r"[a-f0-9A-F]{32}")):
     if not pat.match(s):
@@ -28,6 +29,7 @@ N_FAST=int(args.fast)
 def run(command):
     print(command)
     os.system(command)
+    time.sleep(1)
 
 def run_over_ssh(ip, command):
     print("ssh -t " + ip + " " + command)
@@ -54,9 +56,13 @@ def stop_slaves():
 
 def start_master(master, memory):
     os.system("""sudo sed -i 's/"master": "spark:.*$/"master": "spark:\/\/"""+master+""":7077",/' /home/test/bd/sparkgen-bigdl/conf.json.sample""")
+    time.sleep(1)
     os.system("""sudo sed -i 's/"totalExecutorCores": ".*$/"totalExecutorCores": "4",/' /home/test/bd/sparkgen-bigdl/conf.json.sample""")
+    time.sleep(1)
     os.system("""sudo sed -i 's/"executorMemory": ".*$/"executorMemory": \""""+memory+"""G",/' /home/test/bd/sparkgen-bigdl/conf.json.sample""")
+    time.sleep(1)
     os.system("sudo rm /home/test/bd/sparkgen-bigdl/bigdl.log")
+    time.sleep(1)
     run('sudo su -c "/home/test/bd/spark/sbin/start-master.sh -h '+master+'" test')
 
 def stop_master():
